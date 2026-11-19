@@ -1,0 +1,22 @@
+{
+  "project": "ironworks-16",
+  "seed_commit_sha": "cc5b30bb3504f6432e303aa3a3030f0901ad57fd",
+  "created_at_utc": "2026-11-19T07:59:20Z",
+  "total_tasks": 50,
+  "waves": {
+    "wave_1_core": ["T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09", "T10"],
+    "wave_2_logistics_power": ["T11", "T12", "T13", "T14", "T15", "T16", "T17", "T18", "T19", "T20"],
+    "wave_3_machines_recipes": ["T21", "T22", "T23", "T24", "T25", "T26", "T27", "T28", "T29", "T30", "T31", "T32", "T33", "T34", "T35"],
+    "wave_4_render_ui": ["T36", "T37", "T38", "T39", "T40", "T41", "T42", "T43", "T44", "T45", "T46"],
+    "wave_5_integration": ["T47", "T48", "T49", "T50"]
+  },
+  "protected_read_only_paths": [
+    "SPEC.md",
+    "oracle/",
+    "package.json",
+    "tsconfig.json",
+    "RUN_MANIFEST.json"
+  ],
+  "telemetry_log": "telemetry/agent_events.jsonl",
+  "oracle_log": "oracle/telemetry_log.jsonl"
+}
