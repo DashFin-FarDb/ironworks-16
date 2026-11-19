@@ -122,6 +122,7 @@ export function createApp(options: BootstrapOptions = {}): AppInstance {
   });
 
   let detachInputs: (() => void) | null = null;
+  let isOracleStepping = false;
   if (options.canvas) {
     detachInputs = inputController.attach(
       options.canvas as any,
@@ -130,6 +131,7 @@ export function createApp(options: BootstrapOptions = {}): AppInstance {
   }
 
   function stepTicks(n: number): number {
+    isOracleStepping = true;
     const executed = harness.step(n);
     productionGraph.sample(world.stats, world.tick);
     hotbar.updateReadout(world.tick);
@@ -243,7 +245,9 @@ export function createApp(options: BootstrapOptions = {}): AppInstance {
     if (lastTimestamp > 0) {
       const deltaSec = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
       inputController.update(deltaSec);
-      harness.tickLoop.advance(world, deltaSec * 1000);
+      if (!isOracleStepping) {
+        harness.tickLoop.advance(world, deltaSec * 1000);
+      }
       productionGraph.sample(world.stats, world.tick);
       hotbar.updateReadout(world.tick, deltaSec * 1000);
     }
@@ -317,14 +321,31 @@ export function bootstrapBrowser(): AppInstance | null {
     uiRoot,
     isShowcase,
     seed: 1616,
-    startAnimationLoop: true,
+    startAnimationLoop: false,
   });
 
   // Bind non-negotiable test & oracle window hooks
-  window.__STEP_TICKS__ = (n: number) => app.stepTicks(n);
+  window.__STEP_TICKS__ = (n: number) => {
+    const executed = app.stepTicks(n);
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        app.renderFrame(ctx, canvas.width, canvas.height);
+      }
+    }
+    return executed;
+  };
   window.__FACTORY_TELEMETRY__ = () => app.getTelemetry();
   window.__SERIALIZE_STATE__ = () => app.serializeState();
   window.__INJECT_FAULT__ = (fault: FaultType) => app.injectFault(fault);
+
+  // Render initial tick 0 frame
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      app.renderFrame(ctx, canvas.width, canvas.height);
+    }
+  }
 
   return app;
 }
