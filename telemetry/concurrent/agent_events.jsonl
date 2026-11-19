@@ -1,0 +1,2 @@
+{"timestamp":"2026-11-19T12:56:30Z","event":"experiment_started","mode":"all_concurrent_50_agents","branch":"experiment/all-concurrent","commit":"cc5b30b","status":"active"}
+{"timestamp":"2026-11-19T12:57:55Z","event":"concurrent_run_verified","sha":"d893527","testsPassed":426,"testsFailed":0,"deterministicMatch":true,"stateHash":"58686a285ab8c8e8953544447eabe6cfd328b03d94331b466547f2e5f29bd3f3","status":"completed"}
